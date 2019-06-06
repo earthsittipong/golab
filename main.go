@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"strings"
 )
-type Keyword struct {
+type Login struct {
 	Message  string `json:"message"`
 
 }
@@ -16,7 +16,7 @@ type word struct{
 func main() {
 	r := gin.Default()
 	r.POST("/lab4", func(c *gin.Context) {
-        var message Keyword
+        var message Login
 		c.ShouldBindJSON(&message)
 
         m:= strings.Split(message.Message, " ")
@@ -25,8 +25,7 @@ func main() {
         	words = append(words,word{Word:m[i],Length:len(m[i])})
         	fmt.Println(m[i])
 		}
-		c.JSON(200,words )
-
+		c.JSON(200,words)
 	})
 	r.Run(":8000")
 }
