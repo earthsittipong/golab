@@ -3,48 +3,30 @@
 import (
 	"fmt"
 	"github.com/gin-gonic/gin"
-"strconv")
+	"strings"
+)
+type Keyword struct {
+	Message  string `json:"message"`
 
+}
+type word struct{
+	Word string `json:"word"`
+	Length int `json:"length"`
+}
 func main() {
 	r := gin.Default()
-	r.GET("/lab3", func(c *gin.Context) {
-		point := c.Query("point")
-		p, err := strconv.Atoi(point)
-		if err != nil {
-			fmt.Println("not grade",err)
-			c.String(200,"not grade")
-		} else if p > 90 {
-			c.JSON(200, gin.H{
-				"grade": "A",
-				"point": point,
-			})
-		} else if p > 80 {
-			c.JSON(200, gin.H{
-				"grade": "B",
-				"point": point,
-			})
-		} else if p > 70 {
-			c.JSON(200, gin.H{
-				"grade": "C",
-				"point": point,
-			})
-		} else if p > 60 {
-			c.JSON(200, gin.H{
-				"grade": "D",
-				"point": point,
-			})
-		} else if p <= 60 {
-			c.JSON(200, gin.H{
-				"grade": "F",
-				"point": point,
-			})
-		} else  {
-			c.JSON(200, gin.H{
-				"grade": "not grade",
-				"point": point,
-			})
+	r.POST("/lab4", func(c *gin.Context) {
+        var message Keyword
+		c.ShouldBindJSON(&message)
 
+        m:= strings.Split(message.Message, " ")
+		var words []word
+        for i:=0;i<len(m);i++{
+        	words = append(words,word{Word:m[i],Length:len(m[i])})
+        	fmt.Println(m[i])
 		}
+		c.JSON(200,words )
+
 	})
 	r.Run(":8000")
 }
